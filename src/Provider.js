@@ -114,29 +114,25 @@ const Provider = ({
   return (
     <Context.Provider value={alertContext}>
       {children}
-      {root.current &&
-        createPortal(
-          <>
-            {Object.values(positions).map(position => (
-              <TransitionGroup
-                appear
-                key={position}
-                options={{ position, containerStyle }}
-                component={Wrapper}
-                {...props}
-              >
-                {alertsByPosition[position]
-                  ? alertsByPosition[position].map(alert => (
-                      <Transition type={transition} key={alert.id}>
-                        <AlertComponent style={{ margin: offset }} {...alert} />
-                      </Transition>
-                    ))
-                  : null}
-              </TransitionGroup>
-            ))}
-          </>,
-          root.current
-        )}
+        <>
+          {Object.values(positions).map(position => (
+            <TransitionGroup
+              appear
+              key={position}
+              options={{ position, containerStyle }}
+              component={Wrapper}
+              {...props}
+            >
+              {alertsByPosition[position]
+                ? alertsByPosition[position].map(alert => (
+                    <Transition type={transition} key={alert.id}>
+                      <AlertComponent style={{ margin: offset }} {...alert} />
+                    </Transition>
+                  ))
+                : null}
+            </TransitionGroup>
+          ))}
+        </>
     </Context.Provider>
   )
 }
