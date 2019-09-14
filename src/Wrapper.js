@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { positions } from './options'
 
 export const getStyles = position => {
-  const initialStyles = { position: 'relative' }
+  const initialStyles = { position: 'absolute' }
   switch (position) {
     case positions.TOP_LEFT:
       return {
