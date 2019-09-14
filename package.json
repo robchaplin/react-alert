@@ -19,7 +19,7 @@
     "react-component"
   ],
   "scripts": {
-    "build": "node ./scripts/build.js",
+    "prepare": "node ./scripts/build.js",
     "test": "jest --coverage --no-cache",
     "test:watch": "jest --watch --coverage --no-cache",
     "prepublish": "yarn build",
