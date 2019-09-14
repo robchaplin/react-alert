@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { TransitionGroup } from 'react-transition-group'
-import { createPortal } from 'react-dom'
 import DefaultContext from './Context'
 import Wrapper from './Wrapper'
 import Transition from './Transition'
@@ -20,20 +19,8 @@ const Provider = ({
   context: Context,
   ...props
 }) => {
-  const root = useRef(null)
   const timersId = useRef([])
   const [alerts, setAlerts] = useState([])
-
-  useEffect(() => {
-    root.current = document.createElement('div')
-    document.body.appendChild(root.current)
-
-    return () => {
-      timersId.current.forEach(clearTimeout)
-
-      if (root.current) document.body.removeChild(root.current)
-    }
-  }, [])
 
   const remove = alert => {
     setAlerts(prevState => {
@@ -100,7 +87,6 @@ const Provider = ({
   }
 
   const alertContext = {
-    root: root.current,
     alerts,
     show,
     remove,
@@ -114,25 +100,25 @@ const Provider = ({
   return (
     <Context.Provider value={alertContext}>
       {children}
-        <>
-          {Object.values(positions).map(position => (
-            <TransitionGroup
-              appear
-              key={position}
-              options={{ position, containerStyle }}
-              component={Wrapper}
-              {...props}
-            >
-              {alertsByPosition[position]
-                ? alertsByPosition[position].map(alert => (
-                    <Transition type={transition} key={alert.id}>
-                      <AlertComponent style={{ margin: offset }} {...alert} />
-                    </Transition>
-                  ))
-                : null}
-            </TransitionGroup>
-          ))}
-        </>
+      <>
+        {Object.values(positions).map(position => (
+          <TransitionGroup
+            appear
+            key={position}
+            options={{ position, containerStyle }}
+            component={Wrapper}
+            {...props}
+          >
+            {alertsByPosition[position]
+              ? alertsByPosition[position].map(alert => (
+                  <Transition type={transition} key={alert.id}>
+                    <AlertComponent style={{ margin: offset }} {...alert} />
+                  </Transition>
+                ))
+              : null}
+          </TransitionGroup>
+        ))}
+      </>
     </Context.Provider>
   )
 }
